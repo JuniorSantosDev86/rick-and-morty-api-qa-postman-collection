@@ -1,0 +1,1471 @@
+{
+  "info": {
+    "_postman_id": "ac1ce345-ecff-4f3a-8380-033e4871fec2",
+    "name": "rick-and-morty-api-qa-postman",
+    "description": "Collection criada para praticar testes de API REST utilizando Postman na API pública Rick and Morty.\n\nEste projeto cobre cenários positivos e negativos de testes de API, incluindo listagem de recursos, busca por ID, múltiplos registros, filtros, paginação, validação de status code, validação de JSON, tempo de resposta e validação básica de contrato da resposta.\n\nObjetivo: demonstrar conhecimentos práticos em API Testing, Postman, Newman, testes automatizados, documentação de testes e organização de um projeto de QA para portfólio profissional.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54019349",
+    "_collection_link": "https://go.postman.co/collection/54019349-ac1ce345-ecff-4f3a-8380-033e4871fec2?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Personagens",
+      "item": [
+        {
+          "name": "Listar todos os personagens",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"O tempo de resposta deve ser menor que 2000ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve conter informações de paginação e resultados\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"info\");",
+                  "  pm.expect(resposta).to.have.property(\"results\");",
+                  "  pm.expect(resposta.results).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "pm.test(\"O objeto de paginação deve conter os campos esperados\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta.info).to.have.property(\"count\");",
+                  "  pm.expect(resposta.info).to.have.property(\"pages\");",
+                  "  pm.expect(resposta.info).to.have.property(\"next\");",
+                  "  pm.expect(resposta.info).to.have.property(\"prev\");",
+                  "});",
+                  "",
+                  "pm.test(\"O primeiro personagem deve conter os campos obrigatórios\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "  const personagem = resposta.results[0];",
+                  "",
+                  "  pm.expect(personagem).to.have.property(\"id\");",
+                  "  pm.expect(personagem).to.have.property(\"name\");",
+                  "  pm.expect(personagem).to.have.property(\"status\");",
+                  "  pm.expect(personagem).to.have.property(\"species\");",
+                  "  pm.expect(personagem).to.have.property(\"type\");",
+                  "  pm.expect(personagem).to.have.property(\"gender\");",
+                  "  pm.expect(personagem).to.have.property(\"origin\");",
+                  "  pm.expect(personagem).to.have.property(\"location\");",
+                  "  pm.expect(personagem).to.have.property(\"image\");",
+                  "  pm.expect(personagem).to.have.property(\"episode\");",
+                  "  pm.expect(personagem).to.have.property(\"url\");",
+                  "  pm.expect(personagem).to.have.property(\"created\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/character",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "character"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar personagem por ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"O tempo de resposta deve ser menor que 2000ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test(\"O personagem deve conter os campos obrigatórios\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"id\");",
+                  "  pm.expect(resposta).to.have.property(\"name\");",
+                  "  pm.expect(resposta).to.have.property(\"status\");",
+                  "  pm.expect(resposta).to.have.property(\"species\");",
+                  "  pm.expect(resposta).to.have.property(\"type\");",
+                  "  pm.expect(resposta).to.have.property(\"gender\");",
+                  "  pm.expect(resposta).to.have.property(\"origin\");",
+                  "  pm.expect(resposta).to.have.property(\"location\");",
+                  "  pm.expect(resposta).to.have.property(\"image\");",
+                  "  pm.expect(resposta).to.have.property(\"episode\");",
+                  "  pm.expect(resposta).to.have.property(\"url\");",
+                  "  pm.expect(resposta).to.have.property(\"created\");",
+                  "});",
+                  "",
+                  "pm.test(\"O ID retornado deve ser igual ao ID informado no ambiente\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta.id).to.eql(Number(pm.environment.get(\"id_personagem\")));",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/character/{{id_personagem}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "character",
+                "{{id_personagem}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar múltiplos personagens",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve ser uma lista de personagens\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.be.an(\"array\");",
+                  "  pm.expect(resposta.length).to.be.above(1);",
+                  "});",
+                  "",
+                  "pm.test(\"Todos os personagens devem conter campos obrigatórios\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  resposta.forEach(function (personagem) {",
+                  "    pm.expect(personagem).to.have.property(\"id\");",
+                  "    pm.expect(personagem).to.have.property(\"name\");",
+                  "    pm.expect(personagem).to.have.property(\"status\");",
+                  "    pm.expect(personagem).to.have.property(\"species\");",
+                  "    pm.expect(personagem).to.have.property(\"gender\");",
+                  "    pm.expect(personagem).to.have.property(\"episode\");",
+                  "  });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/character/{{ids_personagens}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "character",
+                "{{ids_personagens}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filtrar personagens por status",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve conter resultados\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"results\");",
+                  "  pm.expect(resposta.results).to.be.an(\"array\");",
+                  "  pm.expect(resposta.results.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Todos os personagens retornados devem possuir o status pesquisado\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "  const statusEsperado = pm.environment.get(\"status_personagem\").toLowerCase();",
+                  "",
+                  "  resposta.results.forEach(function (personagem) {",
+                  "    pm.expect(personagem.status.toLowerCase()).to.eql(statusEsperado);",
+                  "  });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/character?status={{status_personagem}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "character"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "{{status_personagem}}",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filtrar personagens por nome",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve conter resultados\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"results\");",
+                  "  pm.expect(resposta.results).to.be.an(\"array\");",
+                  "  pm.expect(resposta.results.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Todos os personagens retornados devem conter o nome pesquisado\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "  const nomePesquisado = pm.environment.get(\"nome_personagem\").toLowerCase();",
+                  "",
+                  "  resposta.results.forEach(function (personagem) {",
+                  "    pm.expect(personagem.name.toLowerCase()).to.include(nomePesquisado);",
+                  "  });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/character?name={{nome_personagem}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "character"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "{{nome_personagem}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filtrar personagens por espécie",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve conter resultados\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"results\");",
+                  "  pm.expect(resposta.results).to.be.an(\"array\");",
+                  "  pm.expect(resposta.results.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Todos os personagens retornados devem conter a espécie pesquisada\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "  const especiePesquisada = pm.environment.get(\"especie_personagem\").toLowerCase();",
+                  "",
+                  "  resposta.results.forEach(function (personagem) {",
+                  "    pm.expect(personagem.species.toLowerCase()).to.include(especiePesquisada);",
+                  "  });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/character?species={{especie_personagem}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "character"
+              ],
+              "query": [
+                {
+                  "key": "species",
+                  "value": "{{especie_personagem}}",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filtrar personagens por gênero",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve conter resultados\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"results\");",
+                  "  pm.expect(resposta.results).to.be.an(\"array\");",
+                  "  pm.expect(resposta.results.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Todos os personagens retornados devem possuir o gênero pesquisado\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "  const generoEsperado = pm.environment.get(\"genero_personagem\").toLowerCase();",
+                  "",
+                  "  resposta.results.forEach(function (personagem) {",
+                  "    pm.expect(personagem.gender.toLowerCase()).to.eql(generoEsperado);",
+                  "  });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/character?gender={{genero_personagem}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "character"
+              ],
+              "query": [
+                {
+                  "key": "gender",
+                  "value": "{{genero_personagem}}",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Negativo - personagem com ID inválido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 404 para personagem inexistente\", function () {",
+                  "  pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta de erro deve conter uma mensagem\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"error\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/character/{{id_invalido}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "character",
+                "{{id_invalido}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Localizações",
+      "item": [
+        {
+          "name": "Listar todas as localizações",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"O tempo de resposta deve ser menor que 2000ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve conter informações de paginação e resultados\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"info\");",
+                  "  pm.expect(resposta).to.have.property(\"results\");",
+                  "  pm.expect(resposta.results).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "pm.test(\"O objeto de paginação deve conter os campos esperados\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta.info).to.have.property(\"count\");",
+                  "  pm.expect(resposta.info).to.have.property(\"pages\");",
+                  "  pm.expect(resposta.info).to.have.property(\"next\");",
+                  "  pm.expect(resposta.info).to.have.property(\"prev\");",
+                  "});",
+                  "",
+                  "pm.test(\"A primeira localização deve conter os campos obrigatórios\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "  const localizacao = resposta.results[0];",
+                  "",
+                  "  pm.expect(localizacao).to.have.property(\"id\");",
+                  "  pm.expect(localizacao).to.have.property(\"name\");",
+                  "  pm.expect(localizacao).to.have.property(\"type\");",
+                  "  pm.expect(localizacao).to.have.property(\"dimension\");",
+                  "  pm.expect(localizacao).to.have.property(\"residents\");",
+                  "  pm.expect(localizacao).to.have.property(\"url\");",
+                  "  pm.expect(localizacao).to.have.property(\"created\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/location",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "location"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar localização por ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"O tempo de resposta deve ser menor que 2000ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test(\"A localização deve conter os campos obrigatórios\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"id\");",
+                  "  pm.expect(resposta).to.have.property(\"name\");",
+                  "  pm.expect(resposta).to.have.property(\"type\");",
+                  "  pm.expect(resposta).to.have.property(\"dimension\");",
+                  "  pm.expect(resposta).to.have.property(\"residents\");",
+                  "  pm.expect(resposta).to.have.property(\"url\");",
+                  "  pm.expect(resposta).to.have.property(\"created\");",
+                  "});",
+                  "",
+                  "pm.test(\"O ID retornado deve ser igual ao ID informado no ambiente\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta.id).to.eql(Number(pm.environment.get(\"id_localizacao\")));",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/location/{{id_localizacao}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "location",
+                "{{id_localizacao}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar múltiplas localizações",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve ser uma lista de localizações\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.be.an(\"array\");",
+                  "  pm.expect(resposta.length).to.be.above(1);",
+                  "});",
+                  "",
+                  "pm.test(\"Todas as localizações devem conter campos obrigatórios\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  resposta.forEach(function (localizacao) {",
+                  "    pm.expect(localizacao).to.have.property(\"id\");",
+                  "    pm.expect(localizacao).to.have.property(\"name\");",
+                  "    pm.expect(localizacao).to.have.property(\"type\");",
+                  "    pm.expect(localizacao).to.have.property(\"dimension\");",
+                  "    pm.expect(localizacao).to.have.property(\"residents\");",
+                  "    pm.expect(localizacao).to.have.property(\"url\");",
+                  "    pm.expect(localizacao).to.have.property(\"created\");",
+                  "  });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/location/{{ids_localizacoes}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "location",
+                "{{ids_localizacoes}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filtrar localizações por nome",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve conter resultados\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"results\");",
+                  "  pm.expect(resposta.results).to.be.an(\"array\");",
+                  "  pm.expect(resposta.results.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Todas as localizações retornadas devem conter o nome pesquisado\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "  const nomePesquisado = pm.environment.get(\"nome_localizacao\").toLowerCase();",
+                  "",
+                  "  resposta.results.forEach(function (localizacao) {",
+                  "    pm.expect(localizacao.name.toLowerCase()).to.include(nomePesquisado);",
+                  "  });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/location?name={{nome_localizacao}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "location"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "{{nome_localizacao}}",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filtrar localizações por tipo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve conter resultados\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"results\");",
+                  "  pm.expect(resposta.results).to.be.an(\"array\");",
+                  "  pm.expect(resposta.results.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Todas as localizações retornadas devem conter o tipo pesquisado\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "  const tipoPesquisado = pm.environment.get(\"tipo_localizacao\").toLowerCase();",
+                  "",
+                  "  resposta.results.forEach(function (localizacao) {",
+                  "    pm.expect(localizacao.type.toLowerCase()).to.include(tipoPesquisado);",
+                  "  });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/location?type={{tipo_localizacao}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "location"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "{{tipo_localizacao}}",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filtrar localizações por dimensão",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve conter resultados\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"results\");",
+                  "  pm.expect(resposta.results).to.be.an(\"array\");",
+                  "  pm.expect(resposta.results.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Todas as localizações retornadas devem conter a dimensão pesquisada\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "  const dimensaoPesquisada = pm.environment.get(\"dimensao_localizacao\").toLowerCase();",
+                  "",
+                  "  resposta.results.forEach(function (localizacao) {",
+                  "    pm.expect(localizacao.dimension.toLowerCase()).to.include(dimensaoPesquisada);",
+                  "  });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/location?dimension={{dimensao_localizacao}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "location"
+              ],
+              "query": [
+                {
+                  "key": "dimension",
+                  "value": "{{dimensao_localizacao}}",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Negativo - localização com ID inválido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 404 para localização inexistente\", function () {",
+                  "  pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta de erro deve conter uma mensagem\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"error\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/location/{{id_invalido}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "location",
+                "{{id_invalido}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Episódios",
+      "item": [
+        {
+          "name": "Listar todos os episódios",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"O tempo de resposta deve ser menor que 2000ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve conter informações de paginação e resultados\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"info\");",
+                  "  pm.expect(resposta).to.have.property(\"results\");",
+                  "  pm.expect(resposta.results).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "pm.test(\"O objeto de paginação deve conter os campos esperados\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta.info).to.have.property(\"count\");",
+                  "  pm.expect(resposta.info).to.have.property(\"pages\");",
+                  "  pm.expect(resposta.info).to.have.property(\"next\");",
+                  "  pm.expect(resposta.info).to.have.property(\"prev\");",
+                  "});",
+                  "",
+                  "pm.test(\"O primeiro episódio deve conter os campos obrigatórios\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "  const episodio = resposta.results[0];",
+                  "",
+                  "  pm.expect(episodio).to.have.property(\"id\");",
+                  "  pm.expect(episodio).to.have.property(\"name\");",
+                  "  pm.expect(episodio).to.have.property(\"air_date\");",
+                  "  pm.expect(episodio).to.have.property(\"episode\");",
+                  "  pm.expect(episodio).to.have.property(\"characters\");",
+                  "  pm.expect(episodio).to.have.property(\"url\");",
+                  "  pm.expect(episodio).to.have.property(\"created\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/episode",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "episode"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar episódio por ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"O tempo de resposta deve ser menor que 2000ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test(\"O episódio deve conter os campos obrigatórios\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"id\");",
+                  "  pm.expect(resposta).to.have.property(\"name\");",
+                  "  pm.expect(resposta).to.have.property(\"air_date\");",
+                  "  pm.expect(resposta).to.have.property(\"episode\");",
+                  "  pm.expect(resposta).to.have.property(\"characters\");",
+                  "  pm.expect(resposta).to.have.property(\"url\");",
+                  "  pm.expect(resposta).to.have.property(\"created\");",
+                  "});",
+                  "",
+                  "pm.test(\"O ID retornado deve ser igual ao ID informado no ambiente\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta.id).to.eql(Number(pm.environment.get(\"id_episodio\")));",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/episode/{{id_episodio}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "episode",
+                "{{id_episodio}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar múltiplos episódios",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve ser uma lista de episódios\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.be.an(\"array\");",
+                  "  pm.expect(resposta.length).to.be.above(1);",
+                  "});",
+                  "",
+                  "pm.test(\"Todos os episódios devem conter campos obrigatórios\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  resposta.forEach(function (episodio) {",
+                  "    pm.expect(episodio).to.have.property(\"id\");",
+                  "    pm.expect(episodio).to.have.property(\"name\");",
+                  "    pm.expect(episodio).to.have.property(\"air_date\");",
+                  "    pm.expect(episodio).to.have.property(\"episode\");",
+                  "    pm.expect(episodio).to.have.property(\"characters\");",
+                  "    pm.expect(episodio).to.have.property(\"url\");",
+                  "    pm.expect(episodio).to.have.property(\"created\");",
+                  "  });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/episode/{{ids_episodios}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "episode",
+                "{{ids_episodios}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filtrar episódios por nome",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve conter resultados\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"results\");",
+                  "  pm.expect(resposta.results).to.be.an(\"array\");",
+                  "  pm.expect(resposta.results.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Todos os episódios retornados devem conter o nome pesquisado\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "  const nomePesquisado = pm.environment.get(\"nome_episodio\").toLowerCase();",
+                  "",
+                  "  resposta.results.forEach(function (episodio) {",
+                  "    pm.expect(episodio.name.toLowerCase()).to.include(nomePesquisado);",
+                  "  });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/episode?name={{nome_episodio}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "episode"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "{{nome_episodio}}",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Filtrar episódios por código",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve conter resultados\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"results\");",
+                  "  pm.expect(resposta.results).to.be.an(\"array\");",
+                  "  pm.expect(resposta.results.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Todos os episódios retornados devem conter o código pesquisado\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "  const codigoPesquisado = pm.environment.get(\"codigo_episodio\").toLowerCase();",
+                  "",
+                  "  resposta.results.forEach(function (episodio) {",
+                  "    pm.expect(episodio.episode.toLowerCase()).to.include(codigoPesquisado);",
+                  "  });",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/episode?episode={{codigo_episodio}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "episode"
+              ],
+              "query": [
+                {
+                  "key": "episode",
+                  "value": "{{codigo_episodio}}",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Negativo - episódio com ID inválido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 404 para episódio inexistente\", function () {",
+                  "  pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta de erro deve conter uma mensagem\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"error\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/episode/{{id_invalido}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "episode",
+                "{{id_invalido}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Paginação",
+      "item": [
+        {
+          "name": "Paginação de personagens",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve conter objeto de paginação\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"info\");",
+                  "  pm.expect(resposta.info).to.have.property(\"count\");",
+                  "  pm.expect(resposta.info).to.have.property(\"pages\");",
+                  "  pm.expect(resposta.info).to.have.property(\"next\");",
+                  "  pm.expect(resposta.info).to.have.property(\"prev\");",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve conter resultados paginados\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"results\");",
+                  "  pm.expect(resposta.results).to.be.an(\"array\");",
+                  "  pm.expect(resposta.results.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"A página anterior deve apontar para a página 1\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta.info.prev).to.include(\"page=1\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/character?page={{numero_pagina}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "character"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "{{numero_pagina}}",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Paginação de localizações",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve conter objeto de paginação\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"info\");",
+                  "  pm.expect(resposta.info).to.have.property(\"count\");",
+                  "  pm.expect(resposta.info).to.have.property(\"pages\");",
+                  "  pm.expect(resposta.info).to.have.property(\"next\");",
+                  "  pm.expect(resposta.info).to.have.property(\"prev\");",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve conter resultados paginados\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"results\");",
+                  "  pm.expect(resposta.results).to.be.an(\"array\");",
+                  "  pm.expect(resposta.results.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"A página anterior deve apontar para a página 1\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta.info.prev).to.include(\"page=1\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/location?page={{numero_pagina}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "location"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "{{numero_pagina}}",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Paginação de episódios",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deve retornar status code 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve estar em formato JSON\", function () {",
+                  "  pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve conter objeto de paginação\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"info\");",
+                  "  pm.expect(resposta.info).to.have.property(\"count\");",
+                  "  pm.expect(resposta.info).to.have.property(\"pages\");",
+                  "  pm.expect(resposta.info).to.have.property(\"next\");",
+                  "  pm.expect(resposta.info).to.have.property(\"prev\");",
+                  "});",
+                  "",
+                  "pm.test(\"A resposta deve conter resultados paginados\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta).to.have.property(\"results\");",
+                  "  pm.expect(resposta.results).to.be.an(\"array\");",
+                  "  pm.expect(resposta.results.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"A página anterior deve apontar para a página 1\", function () {",
+                  "  const resposta = pm.response.json();",
+                  "",
+                  "  pm.expect(resposta.info.prev).to.include(\"page=1\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url_base}}/episode?page={{numero_pagina}}",
+              "host": [
+                "{{url_base}}"
+              ],
+              "path": [
+                "episode"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "{{numero_pagina}}",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

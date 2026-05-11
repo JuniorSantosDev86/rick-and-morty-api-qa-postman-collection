@@ -1,0 +1,26 @@
+{
+  "name": "rick-and-morty-api-qa-postman",
+  "version": "1.0.0",
+  "description": "Projeto de testes de API REST com Postman e Newman utilizando a API pública Rick and Morty.",
+  "main": "index.js",
+  "scripts": {
+    "test:api": "newman run collections/RickAndMortyAPI.postman_collection.json -e environments/RickAndMortyAPI.postman_environment.json",
+    "report:api": "newman run collections/RickAndMortyAPI.postman_collection.json -e environments/RickAndMortyAPI.postman_environment.json -r cli,htmlextra --reporter-htmlextra-export reports/newman-report.html"
+  },
+  "keywords": [
+    "qa",
+    "api-testing",
+    "postman",
+    "newman",
+    "rest-api",
+    "testes-de-api",
+    "rick-and-morty-api"
+  ],
+  "author": "Ademir dos Santos Junior",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "newman": "^6.2.2",
+    "newman-reporter-htmlextra": "^1.23.1"
+  }
+}
