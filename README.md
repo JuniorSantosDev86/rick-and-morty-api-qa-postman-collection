@@ -320,7 +320,3 @@ QA | Testes de Software | API Testing | Postman | Newman | Cypress | Testes Manu
 GitHub: https://github.com/JuniorSantosDev86
 
 ---
-
-## Licença
-
-Este projeto está sob a licença MIT.
